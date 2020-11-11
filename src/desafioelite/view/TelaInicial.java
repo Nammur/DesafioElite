@@ -27,6 +27,9 @@ public class TelaInicial extends javax.swing.JFrame {
     EmpresaTableModel tableModel = new EmpresaTableModel();
     EmpresaTableModel tableModelAtivos = new EmpresaTableModel();
     EmpresaTableModel tableModelInativos = new EmpresaTableModel();
+    EmpresaTableModel tableModelDateFull = new EmpresaTableModel();
+    EmpresaTableModel tableModelAtivosDate = new EmpresaTableModel();
+    EmpresaTableModel tableModelInativosDate = new EmpresaTableModel();
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     
     Utilidades util = new Utilidades();
@@ -219,8 +222,24 @@ public class TelaInicial extends javax.swing.JFrame {
         //cria uma pasta chamada output para guardar o csv exportado
         File arquivo = new File("Output");
         arquivo.mkdir();
-        util.exportToCSV(jtEmpresas, "./Output"
-                + "/download.csv");
+        if(dateFilter.isSelected() && verPorStatus.getSelectedItem().toString() == "Ativos"){
+            util.exportToCSV(tableModelAtivosDate, "./Output" + "/download.csv");
+        }
+        else if(dateFilter.isSelected() && verPorStatus.getSelectedItem().toString() == "Inativos"){
+            util.exportToCSV(tableModelInativosDate, "./Output" + "/download.csv");
+        }
+        else if(dateFilter.isSelected() && verPorStatus.getSelectedItem().toString() == "Todos"){
+            util.exportToCSV(tableModelDateFull, "./Output" + "/download.csv");
+        }
+        else if(!dateFilter.isSelected() && verPorStatus.getSelectedItem().toString() == "Ativos"){
+            util.exportToCSV(tableModelAtivos, "./Output" + "/download.csv");
+        }
+        else if(!dateFilter.isSelected() && verPorStatus.getSelectedItem().toString() == "Inativos"){
+            util.exportToCSV(tableModelInativos, "./Output" + "/download.csv");
+        }
+        else if(!dateFilter.isSelected() && verPorStatus.getSelectedItem().toString() == "Todos"){
+            util.exportToCSV(tableModel, "./Output" + "/download.csv");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void verPorStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verPorStatusActionPerformed
@@ -234,9 +253,9 @@ public class TelaInicial extends javax.swing.JFrame {
 
     //ao clicar, irá renderizar na tela a tablea de acordo com os filtros estabelecidos
     private void buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActionPerformed
-        EmpresaTableModel tableModelDateFull = new EmpresaTableModel();
-        EmpresaTableModel tableModelAtivosDate = new EmpresaTableModel();
-        EmpresaTableModel tableModelInativosDate = new EmpresaTableModel();
+        tableModelDateFull = new EmpresaTableModel();
+        tableModelAtivosDate = new EmpresaTableModel();
+        tableModelInativosDate = new EmpresaTableModel();
         //verifica se a caixa de seleção do filtro por data está ativada.
         if(dateFilter.isSelected()){
             Date dataMax = null;

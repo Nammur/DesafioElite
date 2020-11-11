@@ -6,6 +6,7 @@
 package desafioelite.util;
 
 import desafioelite.model.Empresa;
+import desafioelite.model.EmpresaTableModel;
 import desafioelite.model.Pessoa;
 import java.io.File;
 import java.io.FileWriter;
@@ -214,30 +215,30 @@ public class Utilidades {
     }
     
     //exporta a jtable para um csv com caminho definido na chamada da função
-    public static boolean exportToCSV(JTable tableToExport,
-        String pathToExportTo) {
+    public static boolean exportToCSV(EmpresaTableModel tableToExport,
+    String pathToExportTo) {
 
-    try {
+        try {
 
-        TableModel model = tableToExport.getModel();
-        try (FileWriter csv = new FileWriter(new File(pathToExportTo))) {
-            for (int i = 0; i < model.getColumnCount(); i++) {
-                csv.write(model.getColumnName(i) + ",");
-            }
-            
-            csv.write("\n");
-            
-            for (int i = 0; i < model.getRowCount(); i++) {
-                for (int j = 0; j < model.getColumnCount(); j++) {
-                    csv.write(model.getValueAt(i, j).toString() + ",");
+            try (FileWriter csv = new FileWriter(new File(pathToExportTo))) {
+                for (int i = 0; i < tableToExport.getColumnCount(); i++) {
+                    csv.write(tableToExport.getColumnNameExport(i) + ",");
                 }
+
                 csv.write("\n");
+
+                for (int i = 0; i < tableToExport.getRowCount(); i++) {
+                    for (int j = 0; j < tableToExport.getColumnCount(); j++) {
+                        csv.write(tableToExport.getValueAtExport(i, j).toString() + ",");
+                    }
+                    csv.write("\n");
+                }
             }
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return true;
-    } catch (IOException e) {
-        e.printStackTrace();
+        return false;
     }
-    return false;
-}
+
 }

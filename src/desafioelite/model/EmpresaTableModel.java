@@ -5,6 +5,7 @@
  */
 package desafioelite.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,10 +19,10 @@ import javax.swing.table.AbstractTableModel;
 public class EmpresaTableModel extends AbstractTableModel{
     
     private List<Empresa> empresas = new ArrayList<>();
-    private String[] colunas = {"CNPJ","Razão Social","Responsável Legal", "Tel. Contato", "Email", "Status"}; 
-    
+    private String[] colunas = {"CNPJ","Razão Social","Responsável Legal", "Tel. Contato", "Email", "Status"};
+    private String[] colunasExport = {"CNPJ","Razão Social","Responsável Legal","Código","Data de Inclusão", "Inscrição Municipal"};
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-    @Override
     public int getRowCount() {
         return empresas.size();
     }
@@ -35,7 +36,10 @@ public class EmpresaTableModel extends AbstractTableModel{
     public String getColumnName(int column) {
         return colunas[column]; //To change body of generated methods, choose Tools | Templates.
     }
-
+        public String getColumnNameExport(int column) {
+        return colunasExport[column]; //To change body of generated methods, choose Tools | Templates.
+    }
+    
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
        switch(columnIndex){
@@ -51,6 +55,23 @@ public class EmpresaTableModel extends AbstractTableModel{
                 return empresas.get(rowIndex).getTelefoneContato();
            case 5 : 
                return empresas.get(rowIndex).getStatus();
+       }
+       return null;
+    }
+    public Object getValueAtExport(int rowIndex, int columnIndex) {
+       switch(columnIndex){
+           case 0 : 
+               return empresas.get(rowIndex).getCnpj();
+           case 1 : 
+               return empresas.get(rowIndex).getRazaoSocial();
+           case 2 : 
+               return empresas.get(rowIndex).getResponsavelLegal().getNome();
+           case 3 : 
+               return empresas.get(rowIndex).getCodigo();
+           case 4 :
+                return sdf.format(empresas.get(rowIndex).getDataInclusao());
+           case 5 : 
+               return empresas.get(rowIndex).getInscricaoMunicipal();
        }
        return null;
     }
