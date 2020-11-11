@@ -55,8 +55,10 @@ public class EmpresaTableModel extends AbstractTableModel{
        return null;
     }
     
+    //adiciona a empresa na lista de empresas do sistema
     public void adcicionarEmpresa(Empresa empresa){
         this.empresas.add(empresa);
+        //ao adicionar, ja adiciona de maneira que fique ordenada pela razão social
         Comparator<Empresa> compareByRazaoSocial = (Empresa o1, Empresa o2) -> o1.getRazaoSocial().compareTo( o2.getRazaoSocial());
         Collections.sort(empresas, compareByRazaoSocial);
     }

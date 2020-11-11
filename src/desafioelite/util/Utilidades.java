@@ -21,6 +21,7 @@ import javax.swing.table.TableModel;
  */
 public class Utilidades {
     
+    //retorna uma das empresas criadas previamente
     public Empresa gerarEmpresa(int index){
         
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -211,6 +212,8 @@ public class Utilidades {
         
         return e;
     }
+    
+    //exporta a jtable para um csv com caminho definido na chamada da função
     public static boolean exportToCSV(JTable tableToExport,
         String pathToExportTo) {
 

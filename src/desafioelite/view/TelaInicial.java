@@ -31,6 +31,7 @@ public class TelaInicial extends javax.swing.JFrame {
     
     Utilidades util = new Utilidades();
     
+    //ao iniciar a tela, já adiciona as empresas à lista de empresas e renderiza a tabela com todas elas sem filtro
     public TelaInicial() {     
         
         for(int i=0;i<12;i++){
@@ -48,24 +49,25 @@ public class TelaInicial extends javax.swing.JFrame {
         getNewRenderedTable(jtEmpresas);
     }
     
-private static JTable getNewRenderedTable(final JTable table) {
-    table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
-        @Override
-        public Component getTableCellRendererComponent(JTable table,
-            Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-            int status = (int) table.getModel().getValueAt(row, 5);
-            if (status == 1) {
-                setBackground(Color.CYAN);
-                setForeground(Color.black);
-            } else {
-                setBackground(Color.red);
-                setForeground(Color.black);
-            }       
-            return this;
-        }   
-    });
-    return table;
+    //renderiza a nova tabela
+    private static JTable getNewRenderedTable(final JTable table) {
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+                int status = (int) table.getModel().getValueAt(row, 5);
+                if (status == 1) {
+                    setBackground(Color.CYAN);
+                    setForeground(Color.black);
+                } else {
+                    setBackground(Color.red);
+                    setForeground(Color.black);
+                }       
+                return this;
+            }   
+        });
+        return table;
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -211,8 +213,10 @@ private static JTable getNewRenderedTable(final JTable table) {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+//aqui estão as ações dos componentes da tela principal
+    //botão de exportar
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //cria uma pasta chamada output para guardar o csv exportado
         File arquivo = new File("Output");
         arquivo.mkdir();
         util.exportToCSV(jtEmpresas, "./Output"
@@ -228,10 +232,12 @@ private static JTable getNewRenderedTable(final JTable table) {
     private void dateFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateFilterActionPerformed
     }//GEN-LAST:event_dateFilterActionPerformed
 
+    //ao clicar, irá renderizar na tela a tablea de acordo com os filtros estabelecidos
     private void buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActionPerformed
         EmpresaTableModel tableModelDateFull = new EmpresaTableModel();
         EmpresaTableModel tableModelAtivosDate = new EmpresaTableModel();
         EmpresaTableModel tableModelInativosDate = new EmpresaTableModel();
+        //verifica se a caixa de seleção do filtro por data está ativada.
         if(dateFilter.isSelected()){
             Date dataMax = null;
             Date dataMin = null;
@@ -246,21 +252,26 @@ private static JTable getNewRenderedTable(final JTable table) {
             } catch (ParseException ex) {
                 Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+            //percorre as 12 empresas criadas manualmente para adicioná-las as listas
             for(int i=0;i<12;i++){
                 Empresa e = util.gerarEmpresa(i);
-                
+                //seleciona apenas as empresas dentro da faixa de tempo selecionada
                 if(e.getDataInclusao().after(dataMin) && e.getDataInclusao().before(dataMax)){
-                    
+                    //adiciona a empresa selecioanda para a lista das empresas filtradas pelo tempo
                     tableModelDateFull.adcicionarEmpresa(util.gerarEmpresa(i));
+                    //verifica se o status da empresa é ativo
                     if((e.getStatus() == 1)){
+                        //adiciona a empresa selecioanda para a lista de empresas ativas filtradas pelo tempo 
                         tableModelAtivosDate.adcicionarEmpresa(util.gerarEmpresa(i));
                     }
-                    else if((e.getStatus() == 2) && e.getDataInclusao().after(dataMin) && e.getDataInclusao().before(dataMax)){
+                    //verifica se o status da empresa é inativo
+                    else if((e.getStatus() == 2)){
+                        //adiciona a empresa selecioanda para a lista de empresas inativas filtradas pelo tempo
                         tableModelInativosDate.adcicionarEmpresa(util.gerarEmpresa(i));
                     }
                 }
             }
+            //define qual tabela será usada de acordo com os filtros
             if(verPorStatus.getSelectedItem().toString() == "Ativos"){
                 jtEmpresas.setModel(tableModelAtivosDate);
             }
