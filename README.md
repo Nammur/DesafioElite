@@ -9,7 +9,7 @@ inicial e final para achar apenas as empresas que tem sua data de inicializaçã
 # Como Usar e Funções dos Botões
 Na esquerda, no canto superior, tem uma combobox que seleciona quais empresas você quer que apareça (ativas, inativas ou todas). À direita da combobox,
 tem uma caixa de seleção com dois campos de texto. Com a caixa selecionada, deve-se preencher os campos de texto com uma data válida para realizar a busca.
-No canto inferior esquerdo, tem o botão de exportar, que vai exportar a tabela com as empresas que es~toa mostradas em tela porém com outros dados da mesma.
+No canto inferior esquerdo, tem o botão de exportar, que vai exportar a tabela com as empresas que estão mostradas em tela porém com outros dados da mesma.
 Já o botão de buscar, quando precionado, verifica os filtros da busca e renderiza a tela com a nova tabela.
 
 
